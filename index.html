@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+    <style>
+        body {
+            font-family: 'Poppins';
+            background-color: black;
+            padding: 0%;
+            margin: 0%;
+            color: white;
+        }
+
+        .box {
+            background-color: black;
+            padding: 50px 50px 50px 50px;
+            margin: 0;
+            position: absolute;
+            top: 10%;
+            box-shadow: 0px 0px 20px 8px rgba(255, 255, 255, 0.2);
+            border-radius: 25px;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            top: 50%;
+            text-align: center;
+        }
+
+        .title {
+            font-size: 40px;
+            font-weight: 900;
+        }
+
+        .box-body {
+            margin: 50px 0px 50px 0px;
+        }
+
+        .serch-box input,
+        .serch-box button {
+            font-size: 22px;
+            font-weight: 600;
+            padding: 10px 20px 10px 20px;
+            border-radius: 25px;
+            border: none;
+        }
+
+        .serch-box {
+            margin-top: 50px;
+            background: white;
+            border-radius: 25px;
+        }
+
+        .todo {
+            display: flex;
+            justify-content: space-between;
+            border-radius: 25px;
+            background-color: rgb(42, 42, 42);
+            padding-left: 25px;
+            margin: 10px 0px 10px 0px;
+        }
+
+        .todos {}
+
+        .todo button {
+            box-shadow: 0px 0px 30px 7px black;
+            border-radius: 25px;
+            border: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="box">
+            <div class="title">Todo List</div>
+            <div class="box-body">
+                <div class="todos">
+
+
+                </div>
+                <div class="serch-box">
+                    <input type="text" required id="todotext">
+                    <button onclick="addTodo()">Add</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    let TodoList = [];
+
+    function render() {
+        document.querySelector(".todos").innerHTML = "";
+        for (let i = 0; i < TodoList.length; i++) {
+            container(i);
+        }
+    }
+
+    function addTodo() {
+        let mytodo = document.querySelector("#todotext").value;
+        document.querySelector("#todotext").value = "";
+        if (mytodo == "" || mytodo === " ") {
+            alert("Please Enter Any Text")
+            return 0
+        }
+        TodoList.push(mytodo);
+        render();
+    }
+
+    function container(index) {
+        let newindex = 'todo-' + index;
+        let newDiv = document.createElement('div');
+        newDiv.setAttribute('class', 'todo');
+        newDiv.setAttribute('id', 'todo-' + index);
+        let newP = document.createElement('p');
+        newP.innerHTML = TodoList[index];
+        let newButt = document.createElement('button');
+        newButt.setAttribute('onclick', 'deleteTodo("' + newindex + '")');
+        newButt.innerHTML = '<i class="fa fa-trash-o" style="font-size:24px;color:red;padding: 12px;"></i>';
+        newDiv.appendChild(newP);
+        newDiv.appendChild(newButt);
+        document.querySelector(".todos").appendChild(newDiv);
+    }
+
+    function deleteTodo(newindex) {
+        let digit = newindex.split('-')[1];
+        TodoList.splice(digit, 1);
+        render();
+    }
+</script>
+</body>
+
+</html>
