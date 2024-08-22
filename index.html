@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ToDo List - By Rupan Santra</title>
+    <title>TodoList - By Rupan Santra</title>
     <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
@@ -17,7 +17,7 @@
             margin: 0%;
             color: white;
         }
-
+        
         .box {
             background-color: black;
             padding: 50px 50px 50px 50px;
@@ -27,23 +27,23 @@
             box-shadow: 0px 0px 20px 8px rgba(255, 255, 255, 0.2);
             border-radius: 25px;
         }
-
+        
         .container {
             display: flex;
             justify-content: center;
             top: 50%;
             text-align: center;
         }
-
+        
         .title {
             font-size: 40px;
             font-weight: 900;
         }
-
+        
         .box-body {
             margin: 50px 0px 50px 0px;
         }
-
+        
         .serch-box input,
         .serch-box button {
             font-size: 22px;
@@ -52,13 +52,13 @@
             border-radius: 25px;
             border: none;
         }
-
+        
         .serch-box {
             margin-top: 50px;
             background: white;
             border-radius: 25px;
         }
-
+        
         .todo {
             display: flex;
             justify-content: space-between;
@@ -67,13 +67,56 @@
             padding-left: 25px;
             margin: 10px 0px 10px 0px;
         }
-
-        .todos {}
-
+        
         .todo button {
-            box-shadow: 0px 0px 30px 7px black;
-            border-radius: 25px;
+            margin-left: 5px;
+            border-radius: 50%;
             border: none;
+        }
+        
+        .edit-modal {
+            opacity: 100%;
+        }
+        
+        .overlay {
+            width: 100%;
+            height: 100%;
+            background-color: rgb(0, 0, 0);
+            position: fixed;
+            opacity: 90%;
+        }
+        
+        .modal {
+            display: none;
+        }
+        
+        .modal-conainer {
+            display: flex;
+            justify-content: center;
+            text-align: center;
+        }
+        
+        .modal-title {
+            background-color: white;
+            border-radius: 25px 25px 0px 0px;
+            color: #616161;
+            padding: 10px 30px 10px 30px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 30px;
+            font-weight: 800;
+        }
+        
+        .modal-box {
+            background-color: #1d1d1d;
+        }
+        
+        .modal-box .serch-box {
+            margin: 20px;
+        }
+        
+        .modal-box .serch-box button {
+            color: #616161;
         }
     </style>
 </head>
@@ -84,8 +127,6 @@
             <div class="title">Todo List</div>
             <div class="box-body">
                 <div class="todos">
-
-
                 </div>
                 <div class="serch-box">
                     <input type="text" required id="todotext">
@@ -93,6 +134,30 @@
                 </div>
             </div>
         </div>
+    </div>
+    <div class="modal">
+        <div class="overlay"></div>
+
+
+        <div class="modal-conainer">
+
+            <div class="box modal-box" style="box-shadow: none; padding: 0px">
+                <div class="modal-title title">
+                    <div class="element">Edit List</div>
+                    <div class="element close" style="color: red;"><i class="fa fa-times" aria-hidden="true"></i></div>
+                </div>
+
+                <div class="box-body">
+
+                    <div class="serch-box">
+                        <input type="text" required id="edit-text">
+                        <button id="edit-btn">Update</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
     </div>
 </body>
 <script>
@@ -125,9 +190,16 @@
         newP.innerHTML = TodoList[index];
         let newButt = document.createElement('button');
         newButt.setAttribute('onclick', 'deleteTodo("' + newindex + '")');
-        newButt.innerHTML = '<i class="fa fa-trash-o" style="font-size:24px;color:red;padding: 12px;"></i>';
+        newButt.innerHTML = '<i class="fa fa-trash-o" style="font-size:25px;color:red;padding: 14px;"></i>';
+        let newButt2 = document.createElement('button');
+        newButt2.setAttribute('onclick', 'edittodo("' + newindex + '")');
+        newButt2.innerHTML = '<i class="fa fa-edit" style="font-size:25px;color:red;padding: 14px"></i>';
+        let buttonDiv = document.createElement('div')
+        buttonDiv.appendChild(newButt2);
+        buttonDiv.appendChild(newButt);
+
         newDiv.appendChild(newP);
-        newDiv.appendChild(newButt);
+        newDiv.appendChild(buttonDiv);
         document.querySelector(".todos").appendChild(newDiv);
     }
 
@@ -136,7 +208,23 @@
         TodoList.splice(digit, 1);
         render();
     }
+
+    function edittodo(index) {
+        let digit = index.split('-')[1];
+        document.querySelector('#edit-text').value = TodoList[digit];
+        document.querySelector('#edit-btn').setAttribute('onclick', 'updateTodo("' + index + '")');
+        document.querySelector('.modal').style.display = "block";
+    }
+
+    function updateTodo(index) {
+        let digit = index.split('-')[1];
+        TodoList[digit] = document.querySelector('#edit-text').value;
+        document.querySelector('.modal').style.display = "none";
+        render();
+    }
+    document.querySelector(".close").addEventListener('click', () => {
+        document.querySelector('.modal').style.display = "none";
+    });
 </script>
-</body>
 
 </html>
